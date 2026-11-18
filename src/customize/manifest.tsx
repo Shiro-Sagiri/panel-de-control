@@ -75,6 +75,7 @@ export const SECTION_BLOCKS: Record<string, BlockDef[]> = {
   system: [
     { id: "eco", labelKey: "system.eco.title", icon: <LuLeaf size={ICON} /> },
     { id: "battery", labelKey: "system.battery.title", icon: <LuBatteryFull size={ICON} /> },
+    { id: "batteryDiag", labelKey: "system.batteryDiag.title", icon: <LuActivity size={ICON} /> },
     { id: "cpu", labelKey: "system.cpu.title", icon: <LuCpu size={ICON} /> },
     { id: "gpu", labelKey: "gpu.clock.title", icon: <LuMemoryStick size={ICON} /> },
     { id: "brightness", labelKey: "system.brightness", icon: <LuSun size={ICON} /> },

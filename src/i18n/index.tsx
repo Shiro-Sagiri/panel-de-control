@@ -1966,6 +1966,21 @@ const es: Record<string, string> = {
   "report.error.title": "No se pudo enviar (¿sin conexión?).",
   "report.error.saved": "Guardé el reporte en {path}. Puedes mandármelo a mano.",
   "report.retry": "Reintentar",
+  "system.batteryDiag.title": "Diagnóstico de batería",
+  "system.batteryDiag.hint": "Carga al 100%, inicia el muestreo y descarga hasta el apagado. Exporta el CSV para ver dónde cae el porcentaje.",
+  "system.batteryDiag.start": "Iniciar muestreo",
+  "system.batteryDiag.stop": "Detener muestreo",
+  "system.batteryDiag.export": "Exportar CSV",
+  "system.batteryDiag.interval": "Intervalo",
+  "system.batteryDiag.samples": "Muestras",
+  "system.batteryDiag.elapsed": "Transcurrido",
+  "system.batteryDiag.segment": "Descarga (segmento)",
+  "system.batteryDiag.total": "Descarga (total)",
+  "system.batteryDiag.active": "Grabando",
+  "system.batteryDiag.idle": "Inactivo",
+  "system.batteryDiag.noData": "Aún no hay muestras",
+  "system.batteryDiag.error": "Error del muestreador",
+  "system.batteryDiag.exported": "CSV descargado",
 };
 
 const en: Record<string, string> = {
@@ -3903,6 +3918,21 @@ const en: Record<string, string> = {
   "report.error.title": "Couldn't send (offline?).",
   "report.error.saved": "I saved the report to {path}. You can send it to me manually.",
   "report.retry": "Retry",
+  "system.batteryDiag.title": "Battery diagnostics",
+  "system.batteryDiag.hint": "Fully charge, start sampling, then discharge until shutdown. Export the CSV to see where the reported charge jumps.",
+  "system.batteryDiag.start": "Start sampling",
+  "system.batteryDiag.stop": "Stop sampling",
+  "system.batteryDiag.export": "Export CSV",
+  "system.batteryDiag.interval": "Interval",
+  "system.batteryDiag.samples": "Samples",
+  "system.batteryDiag.elapsed": "Elapsed",
+  "system.batteryDiag.segment": "Discharged (segment)",
+  "system.batteryDiag.total": "Discharged (total)",
+  "system.batteryDiag.active": "Recording",
+  "system.batteryDiag.idle": "Idle",
+  "system.batteryDiag.noData": "No samples collected yet",
+  "system.batteryDiag.error": "Sampler error",
+  "system.batteryDiag.exported": "CSV downloaded",
 };
 
 const themeIt: Record<string, string> = {

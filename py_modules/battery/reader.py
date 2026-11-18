@@ -57,6 +57,7 @@ class BatteryReader:
         "present": False, "percent": None, "status": None, "health_percent": None,
         "cycle_count": None, "energy_now_mwh": None, "energy_full_mwh": None,
         "energy_full_design_mwh": None, "power_now_w": None, "eta_seconds": None,
+        "voltage_now_uv": None, "current_now_ua": None,
     }
 
     def read(self):
@@ -119,4 +120,9 @@ class BatteryReader:
             "energy_full_design_mwh": design,
             "power_now_w": power_w,
             "eta_seconds": eta,
+            # Raw node values for battery diagnostics / coulomb counting. Already
+            # read above for the power fallback; exposed here so the sampler can
+            # integrate current without re-walking sysfs. None when absent.
+            "voltage_now_uv": voltage_now,
+            "current_now_ua": current_ua,
         }

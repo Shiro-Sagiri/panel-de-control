@@ -1,10 +1,11 @@
 import { FC } from "react";
 import { PanelSectionRow } from "@decky/ui";
-import { LuBatteryFull, LuCpu, LuSun, LuVolume2 } from "react-icons/lu";
+import { LuActivity, LuBatteryFull, LuCpu, LuSun, LuVolume2 } from "react-icons/lu";
 
 import { useI18n } from "../i18n";
 import { ValueBar } from "../components/ValueBar";
 import { BatteryCard } from "../components/BatteryCard";
+import { BatteryDiagnosticsCard } from "../components/BatteryDiagnosticsCard";
 import { CpuCard } from "../components/CpuCard";
 import { GpuClockCard } from "../components/GpuClockCard";
 import { EcoCard } from "../components/EcoCard";
@@ -56,6 +57,21 @@ const BatteryBlock: FC = () => {
         hideHealth={subitemHidden(layout.subitems, "battery", "health")}
         hideLimitControl={subitemHidden(layout.subitems, "battery", "limit")}
       />
+    </Collapsible>
+  );
+};
+
+const BatteryDiagnosticsBlock: FC = () => {
+  const { t } = useI18n();
+  return (
+    <Collapsible
+      id="batteryDiag"
+      icon={<LuActivity size={16} />}
+      title={t("system.batteryDiag.title")}
+      summary={t("system.batteryDiag.idle")}
+      defaultOpen={false}
+    >
+      <BatteryDiagnosticsCard />
     </Collapsible>
   );
 };
@@ -157,6 +173,7 @@ const ConsoleThermalBlock: FC = () => {
 export function registerSystemBlocks(): void {
   registerBlock("eco", { sectionId: "system", Component: EcoBlock });
   registerBlock("battery", { sectionId: "system", Component: BatteryBlock });
+  registerBlock("batteryDiag", { sectionId: "system", Component: BatteryDiagnosticsBlock });
   registerBlock("cpu", { sectionId: "system", Component: CpuBlock });
   registerBlock("gpu", { sectionId: "system", Component: GpuBlock });
   registerBlock("brightness", { sectionId: "system", Component: BrightnessBlock });

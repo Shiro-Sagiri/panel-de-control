@@ -895,6 +895,56 @@ export const setChargeLimit =
 export const setChargeLimitFullOnce =
   callable<[enabled: boolean], ChargeLimit>("set_charge_limit_full_once");
 
+// ---- Battery diagnostics (charge/discharge calibration) -------------------
+export interface BatterySampleRow {
+  elapsed_s: number;
+  time_iso: string;
+  capacity_pct: number | null;
+  status: string | null;
+  ac_online: boolean;
+  energy_now_mwh: number | null;
+  energy_full_mwh: number | null;
+  energy_full_design_mwh: number | null;
+  health_percent: number | null;
+  voltage_now_uv: number | null;
+  current_now_ua: number | null;
+  power_now_w: number | null;
+  segment_discharged_mwh: number;
+  total_discharged_mwh: number;
+}
+
+export interface BatterySamplingStatus {
+  active: boolean;
+  interval_s: number;
+  samples: number;
+  max_rows: number;
+  started_at: number | null;
+  elapsed_s: number | null;
+  segment_discharged_mwh: number;
+  total_discharged_mwh: number;
+  last_sample: BatterySampleRow | null;
+  error: string | null;
+}
+
+export interface BatterySamplingResult {
+  ok: boolean;
+  active: boolean;
+  samples: number;
+  stopped_at?: number | null;
+}
+
+export interface BatteryCsvExport {
+  ok: boolean;
+  csv: string;
+  rows: number;
+}
+
+export const startBatterySampling =
+  callable<[intervalS?: number], BatterySamplingStatus>("start_battery_sampling");
+export const stopBatterySampling = callable<[], BatterySamplingResult>("stop_battery_sampling");
+export const getBatterySamplingStatus = callable<[], BatterySamplingStatus>("get_battery_sampling_status");
+export const exportBatteryCsv = callable<[], BatteryCsvExport>("export_battery_csv");
+
 // ---- CPU (Sistema) --------------------------------------------------------
 export interface CpuToggle {
   supported: boolean;

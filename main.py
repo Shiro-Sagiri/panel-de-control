@@ -143,6 +143,7 @@ from ps5.firmware_io import FirmwareIo
 from ps5.led import is_animated as ps5_led_animated
 from ps5.thermal import THRESHOLD_DEFAULT_C as PS5_GUARD_DEFAULT_C, clamp_threshold
 from battery.reader import BatteryReader
+from battery.sampler import BatterySampler
 from battery.observation import observe_before_apply, worth_logging
 from battery.charge_limit import (
     NullChargeLimit,
@@ -954,6 +955,8 @@ class Plugin(AmbientRpc):
         )
         self._auto_stats_reader_active = False
         self._battery = BatteryReader()
+        # User-started charge/discharge diagnostics sampler (not auto-started).
+        self._battery_sampler = BatterySampler(self._battery, read_on_ac)
         self._charge_limit = select_charge_limit(self._device)
         self._follow_system_charge_limit()
         self._charge_limit_last_apply = None
@@ -10464,6 +10467,27 @@ class Plugin(AmbientRpc):
             "charge_limit": await asyncio.to_thread(self._charge_limit_state),
         }
 
+    # ---- Battery diagnostics (charge/discharge calibration) ----
+    async def start_battery_sampling(self, interval_s: float = 2.0) -> dict:
+        """Start recording battery readings for a calibration run."""
+        self._init()
+        return await asyncio.to_thread(self._battery_sampler.start, interval_s)
+
+    async def stop_battery_sampling(self) -> dict:
+        """Stop recording; collected rows remain available for export."""
+        self._init()
+        return await asyncio.to_thread(self._battery_sampler.stop)
+
+    async def get_battery_sampling_status(self) -> dict:
+        """Current sampler status, last reading and coulomb-count totals."""
+        self._init()
+        return await asyncio.to_thread(self._battery_sampler.status)
+
+    async def export_battery_csv(self) -> dict:
+        """Return all collected samples as a CSV string for frontend download."""
+        self._init()
+        return await asyncio.to_thread(self._battery_sampler.export_csv)
+
     def _build_cpu_frequency_control(self):
         return select_cpu_frequency(
             persisted_state=self._settings.get("cpu_frequency_handoff"),
@@ -16148,6 +16172,8 @@ class Plugin(AmbientRpc):
     def _prepare_shutdown(self) -> None:
         self._cancel_charge_limit_reconcile("shutdown")
         self._stop_charge_limit_full_once_monitor()
+        if getattr(self, "_battery_sampler", None) is not None:
+            self._battery_sampler.stop()
         self._shutting_down = True
         if not getattr(self, "_hud_shutdown", False):
             self._hud_shutdown = True
